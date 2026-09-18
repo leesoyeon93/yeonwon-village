@@ -59,6 +59,14 @@ html,body{margin:0;height:100%;overflow:hidden;background:var(--sky);
 #hintList li b{font-weight:normal;font-size:20px;line-height:1.1}
 #hintList li.done{opacity:.7}
 #hintList li.done span::after{content:" ✅";}
+#doneModal{position:fixed;inset:0;z-index:21;display:grid;justify-items:center;align-items:end;pointer-events:none;padding:16px 16px 14vh}
+#doneModal[hidden]{display:none}
+#doneModal .card{pointer-events:auto;width:min(360px,100%);padding:20px 22px 18px;text-align:center;animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+#doneModal .trophy{font-size:54px;line-height:1;animation:bounce 1s ease-in-out infinite}
+@keyframes bounce{50%{translate:0 -8px}}
+#doneModal h2{margin:8px 0 4px;font-size:26px;font-weight:normal;color:#e0a800}
+#doneModal p{margin:0 0 14px;font-size:15px;line-height:1.55;color:var(--muted)}
+#doneClose{width:100%;font:inherit;font-size:17px;color:#4a3428;background:var(--hi);border:0;border-radius:14px;box-shadow:0 3px 0 #e0a800;padding:9px 0 7px;cursor:pointer}
 #hintClose{margin-top:14px;width:100%;font:inherit;font-size:16px;color:#4a3428;background:var(--hi);border:0;border-radius:14px;box-shadow:0 3px 0 #e0a800;padding:8px 0 6px;cursor:pointer}
 canvas#scene{position:fixed;left:0;top:0;z-index:1;display:block;touch-action:none;width:100%;height:100%}
 #labels{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
@@ -86,6 +94,14 @@ canvas#scene{position:fixed;left:0;top:0;z-index:1;display:block;touch-action:no
 .bubble::after{content:"";position:absolute;left:50%;bottom:-11px;margin-left:-9px;width:0;height:0;
   border-left:9px solid transparent;border-right:9px solid transparent;border-top:11px solid #ffb400}
 .bubble.show{display:block;animation:pop .28s cubic-bezier(.3,1.6,.5,1)}
+.zzz{position:absolute;display:none;transform:translate(18px,-115%);font-size:28px;color:#ffffff;white-space:nowrap;pointer-events:none;
+  text-shadow:0 0 10px rgba(140,170,255,1),0 0 3px rgba(80,110,220,1)}
+.zzz.show{display:block}
+.zzz span{display:inline-block;opacity:0;animation:zfloat 2.4s ease-in-out infinite}
+.zzz span:nth-child(2){font-size:.78em;animation-delay:.8s}
+.zzz span:nth-child(3){font-size:.6em;animation-delay:1.6s}
+@keyframes zfloat{0%{opacity:.25;transform:translate(0,8px)}30%{opacity:1}80%{opacity:1}100%{opacity:.25;transform:translate(10px,-22px)}}
+@media (prefers-reduced-motion: reduce){ .zzz span{animation:none;opacity:1} }
 @keyframes pop{from{scale:.4;opacity:0}to{scale:1;opacity:1}}
 
 .fx{position:absolute;transform:translate(-50%,-50%);font-size:20px;text-shadow:0 1px 3px rgba(255,255,255,.9)}
@@ -154,10 +170,18 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
 <div id="toast" class="box" role="status"></div>
 <div id="hintModal" role="dialog" aria-modal="true" aria-labelledby="hintTitle" hidden>
   <div class="card box">
-    <h2 id="hintTitle">숨은 재미 힌트</h2>
+    <h2 id="hintTitle">퀘스트 힌트</h2>
     <p class="sub" id="hintCount"></p>
     <ul id="hintList"></ul>
     <button id="hintClose">닫기</button>
+  </div>
+</div>
+<div id="doneModal" role="dialog" aria-modal="true" aria-labelledby="doneTitle" hidden>
+  <div class="card box">
+    <div class="trophy">🏆</div>
+    <h2 id="doneTitle">모든 퀘스트 완료!</h2>
+    <p>7개의 퀘스트를 모두 찾았어요.<br>연원마을 가족들이 다 함께 박수로 축하해요 👏</p>
+    <button id="doneClose">고마워요!</button>
   </div>
 </div>
 <canvas id="scene"></canvas>
@@ -176,7 +200,7 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
   <div id="now">지금 움직이는 사람 <span>재윤</span></div>
   <div class="keys"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> 이동 &nbsp; <kbd>Space</kbd> 점프 &nbsp; <kbd>Tab</kbd> 다음 사람 &nbsp; <kbd>N</kbd> 낮/밤 &nbsp; 화면 끌기로도 이동</div>
   <div class="touch">끌어서 이동 · 두 손가락 확대</div>
-  <div id="eggs">🥚 숨은 재미를 찾아보세요 0/7</div>
+  <div id="eggs">🥚 퀘스트 0/7</div>
 </div>
 
 <div id="tools" class="ui">
@@ -185,7 +209,7 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
   <button id="dayBtn" aria-label="밤으로 바꾸기" title="낮/밤 바꾸기">🌙</button>
   <button id="musicBtn" aria-label="음악 끄기" title="배경음 켜기/끄기">🔊</button>
   <button id="partyBtn" aria-label="댄스 파티" title="댄스 파티">🎉</button>
-  <button id="hintBtn" aria-label="숨은 재미 힌트" title="숨은 재미 힌트">💡</button>
+  <button id="hintBtn" aria-label="퀘스트 힌트" title="퀘스트 힌트">💡</button>
   <button id="resetBtn" aria-label="처음 자리로" title="처음 자리로">🔄</button>
 </div>
 
@@ -663,13 +687,18 @@ function makePerson(spec){
   const fz = (x,y)=> Math.sqrt(Math.max(0, hr*hr - x*x - y*y));
   const eyeR = hr*(age==='toddler'?0.165:0.14), ex = hr*0.34, ey = hr*0.02;
   const face = spec.face || 'normal', dark = cm(0x2a2020);
+  const eyesOpen = [], eyesClosed = [];
   [-1,1].forEach(sd=>{
     const happyEye = face==='smile' || (face==='grin' && sd>0);   // ^ 모양 눈 (웃는 눈 / 윙크)
     if(happyEye){
       mesh(new THREE.TorusGeometry(eyeR*0.95, eyeR*0.3, 8, 18, Math.PI), dark, sd*ex, ey-eyeR*0.3, fz(ex,ey)*0.97, head, false);
     } else {
-      ball(eyeR,0,sd*ex,ey,fz(ex,ey)*0.93,head,0.85,1.15,0.5,dark);
-      ball(eyeR*0.38,0,sd*ex-eyeR*0.25,ey+eyeR*0.4,fz(ex,ey)*0.93+eyeR*0.35,head,1,1,1,whiteShine,false);
+      eyesOpen.push(ball(eyeR,0,sd*ex,ey,fz(ex,ey)*0.93,head,0.85,1.15,0.5,dark));
+      eyesOpen.push(ball(eyeR*0.38,0,sd*ex-eyeR*0.25,ey+eyeR*0.4,fz(ex,ey)*0.93+eyeR*0.35,head,1,1,1,whiteShine,false));
+      if(age==='toddler'){ // 잘 때 감은 눈 (‿)
+        const cl = mesh(new THREE.TorusGeometry(eyeR*0.85, eyeR*0.24, 8, 18, Math.PI), dark, sd*ex, ey+eyeR*0.15, fz(ex,ey)*0.97, head, false);
+        cl.rotation.z = Math.PI; cl.visible = false; eyesClosed.push(cl);
+      }
     }
     ball(hr*(spec.chubby||face==='smile'?0.17:0.14),0,sd*hr*0.58,-hr*0.2,fz(hr*0.58,-hr*0.2)*0.9,head,1,0.6,0.35,cm(0xffa3b5),false);
   });
@@ -762,7 +791,7 @@ function makePerson(spec){
   const headTop = leg + torso + hr*0.8 + hr;
   const k = s*CHAR;
   const p = { root, inner, upper, legL, legR, armL, armR, age, child: age!=='adult', ponytail, catTail,
-    height:(headTop + extraTop + 0.12)*k, signY:(headTop + extraTop)*k, hipH: leg*k };
+    height:(headTop + extraTop + 0.12)*k, signY:(headTop + extraTop)*k, hipH: leg*k, eyesOpen, eyesClosed, asleep:false };
   root.traverse(o=>{ o.userData.person = p; });
   return p;
 }
@@ -788,6 +817,7 @@ FAMILIES.forEach(fam=>{
     p.tag = document.createElement('div'); p.tag.className='tag'; p.tag.textContent = spec.label; labelsEl.appendChild(p.tag);
     if(spec.sign){ p.sign = document.createElement('div'); p.sign.className = 'sign '+spec.sign.cls; p.sign.textContent = spec.sign.text; labelsEl.appendChild(p.sign); }
     p.bubble = document.createElement('div'); p.bubble.className='bubble'; labelsEl.appendChild(p.bubble);
+    if(p.age==='toddler'){ p.zzz = document.createElement('div'); p.zzz.className='zzz'; p.zzz.innerHTML='<span>Z</span><span>z</span><span>z</span>'; labelsEl.appendChild(p.zzz); }
     p.btn = document.createElement('button'); p.btn.textContent = spec.label; wrap.appendChild(p.btn);
     p.btn.addEventListener('click', ()=>{ select(people.indexOf(p)); p.btn.blur(); });
     if(spec.sign2){ p.sign2 = document.createElement('div'); p.sign2.className = 'sign '+spec.sign2.cls; p.sign2.textContent = spec.sign2.text; labelsEl.appendChild(p.sign2); }
@@ -909,6 +939,15 @@ function sfx(kind){
   if(kind==='coin'){ tone(88, t, 0.08, 'square', 0.05, o); tone(93, t+0.08, 0.4, 'square', 0.05, o); }
   if(kind==='star'){ [96,93,91,88,84,81].forEach((m,i)=>tone(m, t+i*0.08, 0.5, 'sine', 0.06, o)); }
   if(kind==='giant'){ tone(45, t, 0.7, 'square', 0.06, o, 69); }
+  if(kind==='clap'){
+    const c = Sound.ctx;
+    for(let k=0;k<5;k++){
+      const tt = t + Math.random()*0.06, src = c.createBufferSource(), bp = c.createBiquadFilter(), g = c.createGain();
+      src.buffer = Sound.noise; bp.type = 'bandpass'; bp.frequency.value = 1100 + Math.random()*900; bp.Q.value = 1.2;
+      g.gain.setValueAtTime(0.0001, tt); g.gain.exponentialRampToValueAtTime(0.35, tt+0.004); g.gain.exponentialRampToValueAtTime(0.0001, tt+0.09);
+      src.connect(bp); bp.connect(g); g.connect(o); src.start(tt); src.stop(tt+0.12);
+    }
+  }
   if(kind==='egg'){ [72,76,79,84,79,84].forEach((m,i)=>tone(m, t+0.5+i*0.1, 0.25, 'triangle', 0.1, o)); }
   if(kind==='seesaw'){ [72,79,72,79].forEach((m,i)=>tone(m, t+i*0.16, 0.14, 'triangle', 0.1, o)); }
   if(kind==='love'){ [76,79,84,88,91].forEach((m,i)=>tone(m, t+i*0.1, 0.35, 'sine', 0.1, o)); }
@@ -961,8 +1000,11 @@ function meet(a, b){
     setAct(b, 'greet', 1.8, fb, '네, 안녕하세요!');
     sfx('greet');
   } else if(a.child && b.child){
-    setAct(a, 'play', 3.4, fa, callName(b.spec.name)+' 놀자!');
-    setAct(b, 'play', 3.4, fb, '까르르~');
+    const bro = x=> x.spec.role==='daughter' ? '오빠' : '형';          // 아기들이 태현이를 부르는 말
+    const lineA = b.spec.name==='태현' ? bro(a)+' 놀자!' : callName(b.spec.name)+' 놀자!';
+    const lineB = a.spec.name==='태현' ? bro(b)+' 좋아~!' : '까르르~';
+    setAct(a, 'play', 3.4, fa, lineA);
+    setAct(b, 'play', 3.4, fb, lineB);
     sfx('play');
   } else {
     const kid = a.child ? a : b, adult = a.child ? b : a;
@@ -1014,7 +1056,7 @@ function jump(){
     p.jumps = [];
     setTimeout(()=>{
       people.forEach(q=>{ if(!q.ride && (q===p || Math.hypot(q.x-p.x, q.z-p.z) < 14)) setAct(q, 'dance', 6, CAM_FACE, q===p ? '신난다~ 🎵' : '나도 나도!'); });
-      sfx('play'); findEgg('dance', '💃 폴짝폴짝 뛰다가 신나서 춤을 춰요! 옆 사람도 따라 춰요');
+      sfx('play'); toast('💃 폴짝폴짝 뛰다가 신나서 춤을 춰요!');
     }, 650);
   }
 }
@@ -1051,8 +1093,8 @@ function findEgg(id, msg){
   toast(msg);
   if(eggsFound.has(id)) return;
   eggsFound.add(id); sfx('egg');
-  eggsEl.textContent = eggsFound.size < EGG_TOTAL ? `🥚 숨은 재미 ${eggsFound.size}/${EGG_TOTAL}` : `🏆 숨은 재미 ${EGG_TOTAL}/${EGG_TOTAL} 모두 찾았어요!`;
-  if(eggsFound.size === EGG_TOTAL) setTimeout(()=>startParty('🏆 숨은 재미를 모두 찾았어요! 축하 파티!'), 2800);
+  eggsEl.textContent = eggsFound.size < EGG_TOTAL ? `🥚 퀘스트 ${eggsFound.size}/${EGG_TOTAL}` : `🏆 퀘스트 ${EGG_TOTAL}/${EGG_TOTAL} 모두 완료!`;
+  if(eggsFound.size === EGG_TOTAL) setTimeout(celebrate, 2000);
 }
 const HINTS = [
   ['cat','🐱','머리 위에 무언가를 얹고 다니는 사람들이 있어요. 살짝 쓰다듬어 볼까요?'],
@@ -1061,14 +1103,14 @@ const HINTS = [
   ['tree','🍎','나무에 빨간 열매가 달려 있어요. 흔들면 어떻게 될까요?'],
   ['sun','☀️','낮에 하늘 위 동그란 친구에게 인사해 보세요.'],
   ['moon','🌙','밤에만 만날 수 있는 친구가 있어요. 소원을 빌어 봐요.'],
-  ['dance','💃','신나면 몸이 들썩들썩! 제자리에서 폴짝폴짝 계속 뛰어 보면 춤을 출지도 몰라요.'],
+  ['party','🎉','오른쪽 버튼 중에 제일 신나는 버튼이 있어요. 눌러서 다 같이 춤춰 봐요!'],
 ];
 const hintModal = document.getElementById('hintModal'), hintList = document.getElementById('hintList');
 function openHints(){
   hintList.innerHTML = '';
   HINTS.forEach(([id,ic,txt])=>{ const li = document.createElement('li'); if(eggsFound.has(id)) li.className='done';
     li.innerHTML = `<b>${ic}</b><span>${txt}</span>`; hintList.appendChild(li); });
-  document.getElementById('hintCount').textContent = `${eggsFound.size}/${EGG_TOTAL}개 찾았어요`;
+  document.getElementById('hintCount').textContent = `${eggsFound.size}/${EGG_TOTAL}개 완료했어요`;
   hintModal.hidden = false; document.getElementById('hintClose').focus();
 }
 function closeHints(){ hintModal.hidden = true; document.getElementById('hintBtn').focus(); }
@@ -1076,6 +1118,7 @@ document.getElementById('hintBtn').addEventListener('click', openHints);
 document.getElementById('hintClose').addEventListener('click', closeHints);
 hintModal.addEventListener('click', e=>{ if(e.target===hintModal) closeHints(); });
 addEventListener('keydown', e=>{ if(e.key==='Escape' && !hintModal.hidden) closeHints(); });
+addEventListener('keydown', e=>{ if(e.key==='Escape' && !doneModal.hidden) doneModal.hidden = true; });
 function resetPositions(){
   people.forEach(p=>{
     if(p.ride){ p.ride.occupant = null; p.ride = null; }
@@ -1091,12 +1134,21 @@ function resetPositions(){
   toast('🔄 모두 처음 자리로 돌아왔어요');
 }
 document.getElementById('resetBtn').addEventListener('click', e=>{ ensureAudio(); resetPositions(); sfx('pick'); e.currentTarget.blur(); });
+const doneModal = document.getElementById('doneModal');
+let clapT = 0, clapNext = 0;
+function celebrate(){
+  partyT = 0; Sound.party = false;
+  people.forEach((p,i)=> setAct(p, 'clap', 7, CAM_FACE, ['축하해요! 👏','최고예요!','짝짝짝~','대단해요!'][i%4]));
+  clapT = 5.5; clapNext = 0; sfx('egg');
+  doneModal.hidden = false; document.getElementById('doneClose').focus();
+}
+document.getElementById('doneClose').addEventListener('click', ()=>{ doneModal.hidden = true; });
 function startParty(msg){
   partyT = 10; Sound.party = true;
   people.forEach(p=>{ if(!p.ride) setAct(p, 'dance', 10, CAM_FACE, ['신난다~!','🎵 둠칫둠칫','댄스 타임!','야호~!'][Math.floor(Math.random()*4)]); });
   toast(msg);
 }
-document.getElementById('partyBtn').addEventListener('click', e=>{ ensureAudio(); startParty('🎉 연원마을 댄스 파티!'); e.currentTarget.blur(); });
+document.getElementById('partyBtn').addEventListener('click', e=>{ ensureAudio(); startParty('🎉 연원마을 댄스 파티!'); findEgg('party', '🎉 댄스 파티 퀘스트 완료! 다 같이 춤춰요'); e.currentTarget.blur(); });
 document.getElementById('sun').addEventListener('click', e=>{
   ensureAudio(); const el = e.currentTarget; el.classList.add('spin'); setTimeout(()=>el.classList.remove('spin'), 700);
   people.forEach(p=>{ if(!p.ride) setAct(p, 'wave', 2.4, CAM_FACE, p.child ? '햇님 안녕!' : '날씨 좋다~'); });
@@ -1230,6 +1282,7 @@ function tick(){
   nightK += ((night?1:0) - nightK) * Math.min(1, dt*2.5);
   skyCol.copy(DAY_SKY).lerp(NIGHT_SKY, nightK);
   document.body.style.background = partyT>0 ? `hsl(${(t*140)%360},75%,${78-nightK*30}%)` : skyCol.getStyle();
+  if(clapT>0){ clapT -= dt; clapNext -= dt; if(clapNext<=0){ sfx('clap'); clapNext = 0.35; } }
   if(partyT>0){ partyT -= dt; confettiT -= dt;
     if(confettiT<=0){ confettiT = 0.12; const q = people[Math.floor(Math.random()*people.length)]; spawnFx(q, ['🎉','✨','★','♪','🎈'][Math.floor(Math.random()*5)]); }
     if(partyT<=0){ Sound.party = false; } }
@@ -1317,6 +1370,11 @@ function tick(){
           aLx = aRx = -1.35; aLz = -0.35 - Math.sin(a.t*6)*0.12; aRz = 0.35 + Math.sin(a.t*6)*0.12;
           bow = 0.12; hop = p.child ? Math.abs(Math.sin(a.t*6))*0.4 : 0;
           a.emit -= dt; if(a.emit<=0){ spawnFx(p,'♥'); a.emit = 0.3; }
+        } else if(a.type==='clap' && !p.ride){
+          const c = 1 - Math.abs(Math.sin(a.t*9 + a.off*0.3));        // 손이 모였다 벌어졌다
+          aLx = aRx = -1.25; aLz = 0.35 + c*0.45; aRz = -(0.35 + c*0.45);
+          hop = p.child ? Math.abs(Math.sin(a.t*6))*0.5 : 0;
+          a.emit -= dt; if(a.emit<=0){ spawnFx(p, ['👏','🎉','✨','★'][Math.floor(Math.random()*4)]); a.emit = 0.45; }
         } else if(a.type==='dance' && !p.ride){
           const b = a.t*8 + a.off;
           hop = Math.abs(Math.sin(b))*1.0;
@@ -1356,6 +1414,11 @@ function tick(){
     p.legL.rotation.x = lL; p.legR.rotation.x = lR;
     p.armL.rotation.x = aLx; p.armR.rotation.x = aRx;
     p.armL.rotation.z = aLz; p.armR.rotation.z = aRz;
+    if(p.zzz){ // 밤이 되면 아기들은 꾸벅꾸벅 잠들어요
+      const asleep = nightK > 0.6 && !moving && !p.act && !p.ride && p.y <= 0.001 && (i !== current || (p.idleT||0) > 1.5);
+      if(asleep){ bow = 0.2 + (reduced ? 0 : Math.sin(t*1.3 + i)*0.06); aLx = aRx = 0.1; aLz = aRz = 0; roll = 0; }
+      if(asleep !== p.asleep){ p.asleep = asleep; p.eyesOpen.forEach(m=> m.visible = !asleep); p.eyesClosed.forEach(m=> m.visible = asleep); p.zzz.classList.toggle('show', asleep); }
+    }
     p.upper.rotation.x = bow;
     p.inner.rotation.z = roll;
     if(p.ponytail) p.ponytail.rotation.x = Math.sin(p.phase*2)*0.25*p.walk + (reduced?0:Math.sin(t*2+i)*0.05);
@@ -1419,6 +1482,7 @@ function tick(){
     }
     put(p.tag, tx, ty);
     if(p.act) put(p.bubble, tx, ty);
+    if(p.asleep) put(p.zzz, tx, ty);
   });
   FAMILIES.forEach(f=>{ const [x,y] = scr(f.pos[0], H+2.4, f.pos[1]); put(f.tag, x, y);
     const [sx,sy] = scr(f.pos[0], H-1, f.pos[1]+D/2+0.02); put(f.sign, sx, sy); });
