@@ -831,11 +831,17 @@ select(2);
 const Sound = { ctx:null, on:true, step:0, next:0 };
 const mtof = m => 440*Math.pow(2,(m-69)/12);
 const CHORDS = [[48,52,55],[45,48,52],[41,45,48],[43,47,50]];
-const DAY_MEL = [
+const PARTY_MEL = [
   76,0,79,76, 72,0,74,76,   76,0,72,69, 72,0,76,0,
   69,72,77,76, 74,72,74,0,  71,74,79,77, 76,0,74,0,
   76,0,79,76, 84,0,79,0,    81,79,76,74, 72,0,76,0,
   77,76,74,72, 74,0,71,0,   72,0,0,0, 67,71,74,0 ];
+// 낮 노래: 장난감 피아노로 치는 3박자 왈츠 (F장조)
+const DAY_CH = [[53,57,60],[48,52,55],[50,53,57],[46,50,53],[53,57,60],[48,52,55],[46,50,53],[48,52,55]]; // F C Dm Bb F C Bb C
+const DAY_MEL = [
+  77,0,81,0,84,0,   84,86,84,0,79,0,   81,0,77,0,74,0,   77,79,81,0,0,0,
+  89,0,88,0,84,0,   86,84,79,0,84,0,   82,0,81,0,79,0,   76,0,79,0,77,0 ];
+function toyPiano(m, t, vol){ tone(m, t, 0.4, 'triangle', vol); tone(m+12, t, 0.12, 'sine', vol*0.35); }
 function ensureAudio(){
   const AC = window.AudioContext || window.webkitAudioContext;
   if(!AC) return;
@@ -870,17 +876,16 @@ function schedule(){
   while(Sound.next < c.currentTime + 0.15){
     const t = Sound.next, s = Sound.step % 64, e = s % 8, ch = CHORDS[Math.floor(s/8)%4];
     if(Sound.party){ // 댄스 파티!
-      const m = DAY_MEL[s]; if(m) tone(m+12, t, 0.14, 'square', 0.04);
+      const m = PARTY_MEL[s]; if(m) tone(m+12, t, 0.14, 'square', 0.04);
       tone(e%2 ? ch[0]+12 : ch[0], t, 0.14, 'triangle', 0.14);
       hat(t, 0.03); if(e%4===0) tone(36, t, 0.12, 'sine', 0.2, Sound.music, 30);
       Sound.next += 0.16;
     } else if(!night){
-      const m = DAY_MEL[s]; if(m) tone(m, t, 0.2, 'square', 0.045);
-      if(e===0) tone(ch[0], t, 0.3, 'triangle', 0.16);
-      if(e===4) tone(ch[2], t, 0.3, 'triangle', 0.14);
-      if(e===2||e===6) tone(ch[0]+12, t, 0.12, 'triangle', 0.08);
-      if(e%2) hat(t, 0.025);
-      Sound.next += 0.25;
+      const s6 = Sound.step % 48, e6 = s6 % 6, chd = DAY_CH[Math.floor(s6/6)];
+      const m = DAY_MEL[s6]; if(m) toyPiano(m, t, 0.07);                       // 장난감 피아노 멜로디
+      if(e6===2 || e6===4){ tone(chd[1]+12, t, 0.14, 'triangle', 0.032); tone(chd[2]+12, t, 0.14, 'triangle', 0.028); hat(t, 0.012); } // 쿵짝짝의 '짝짝'
+      if(e6===0) tone(chd[0]+24, t, 0.7, 'sine', 0.028);                         // 마디 첫 박 은은한 종소리
+      Sound.next += 0.2;
     } else {
       const arp = [0,1,2,1,0,2,1,2][e];
       tone(ch[arp]+24, t, 1.0, 'sine', 0.06);
