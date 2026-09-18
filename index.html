@@ -4,16 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>연원마을 현대 | 귀여운 3D 아파트 마을 게임</title>
-<!--
-  ▼ 웹에 올린 뒤 아래 SITE 주소(https://YOUR-ID.github.io/yeonwon-village/)를
-    실제 주소로 모두 바꿔 주세요. (카카오톡·페이스북·X는 og:image가 전체 주소여야 미리보기가 떠요)
--->
 <meta name="description" content="102동 재윤이네, 103동 채이네, 104동 서현이네, 107동 유담이네! 귀여운 3D 캐릭터로 아파트 단지를 걸어 다니며 이웃과 인사하고, 놀이터에서 그네·시소를 타고, 숨겨진 퀘스트 7개를 찾아보세요.">
 <meta name="keywords" content="연원마을, 연원마을 현대, 3D 게임, 아파트 게임, 웹 게임, three.js, 귀여운 캐릭터, 가족 게임">
 <meta name="author" content="연원마을 현대">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#a9d6ee">
-<link rel="canonical" href="https://YOUR-ID.github.io/yeonwon-village/">
+<link rel="canonical" href="https://yeonwon-village.vercel.app/">
 
 <!-- 공유 미리보기 (카카오톡, 페이스북, 슬랙 등) -->
 <meta property="og:type" content="website">
@@ -21,8 +17,8 @@
 <meta property="og:locale" content="ko_KR">
 <meta property="og:title" content="연원마을 현대 | 귀여운 3D 아파트 마을 게임">
 <meta property="og:description" content="재윤이네, 채이네, 서현이네, 유담이네가 사는 3D 아파트 마을! 이웃과 인사하고, 그네·시소 타고, 숨은 퀘스트 7개를 찾아보세요.">
-<meta property="og:url" content="https://YOUR-ID.github.io/yeonwon-village/">
-<meta property="og:image" content="https://YOUR-ID.github.io/yeonwon-village/og-image.png">
+<meta property="og:url" content="https://yeonwon-village.vercel.app/">
+<meta property="og:image" content="https://yeonwon-village.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="연원마을 현대 아파트 앞 광장에서 손을 흔드는 네 가족 캐릭터들">
@@ -31,7 +27,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="연원마을 현대 | 귀여운 3D 아파트 마을 게임">
 <meta name="twitter:description" content="재윤이네, 채이네, 서현이네, 유담이네가 사는 3D 아파트 마을! 이웃과 인사하고 숨은 퀘스트를 찾아보세요.">
-<meta name="twitter:image" content="https://YOUR-ID.github.io/yeonwon-village/og-image.png">
+<meta name="twitter:image" content="https://yeonwon-village.vercel.app/og-image.png">
 <meta name="twitter:image:alt" content="연원마을 현대 아파트 앞 광장에서 손을 흔드는 네 가족 캐릭터들">
 
 <!-- 아이콘 -->
@@ -46,8 +42,8 @@
   "@type": "VideoGame",
   "name": "연원마을 현대",
   "description": "귀여운 3D 캐릭터로 아파트 단지를 걸어 다니며 이웃과 인사하고, 놀이터에서 놀고, 숨은 퀘스트 7개를 찾는 웹 게임",
-  "url": "https://YOUR-ID.github.io/yeonwon-village/",
-  "image": "https://YOUR-ID.github.io/yeonwon-village/og-image.png",
+  "url": "https://yeonwon-village.vercel.app/",
+  "image": "https://yeonwon-village.vercel.app/og-image.png",
   "inLanguage": "ko",
   "genre": ["캐주얼", "생활 시뮬레이션"],
   "gamePlatform": ["Web browser", "Mobile"],
@@ -282,23 +278,23 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
    sign: 머리 위 글씨, cat: 머리 위 고양이 색, racer: 모터보트 선수, chubby, big, stripes, dress, skin */
 const FAMILIES = [
   { dong:'102', name:'재윤이네', color:'#5b8def', wall:'#fdf3e1', pos:[-34.5,-12.5], rot:0, members:[
-    { label:'재윤이 아빠', role:'dad', soccer:true, shirt:0x1f5fbf, pants:0xffffff, hair:'crew', hairColor:0x2b1d14, sign:{text:'현대', cls:'hyundai'}, sign2:{text:'⚽ 열혈 축구팬', cls:'soccer'}, tapLine:'골~~~!! ⚽', waveLine:'오늘 축구 보러 가요! ⚽' },
-    { label:'재윤이 엄마', role:'mom', shirt:0xa7c7ff, pants:0xa7c7ff, hair:'bun', hairColor:0x5a3825, sign:{text:'삼성', cls:'samsung'} },
-    { label:'재윤', name:'재윤', role:'son', age:'toddler', chubby:true, hair:0x2b1d14,
+    { label:'재윤이 아빠', role:'dad', soccer:true, shirt:0x1f5fbf, pants:0xffffff, hair:'crew', hairColor:0x2b1d14, sign:{text:'현대', cls:'hyundai'}, sign2:{text:'⚽ 열혈 축구팬', cls:'soccer'}, tapLine:'수원삼성 화이팅! ⚽', waveLine:'오늘 축구 보러 가요! ⚽' },
+    { label:'재윤이 엄마', tapLine:'완전 럭키비키잖아~ 🍀', role:'mom', shirt:0xa7c7ff, pants:0xa7c7ff, hair:'bun', hairColor:0x5a3825, sign:{text:'삼성', cls:'samsung'} },
+    { label:'재윤', tapLine:'간식 주세요~ 🍪', name:'재윤', role:'son', age:'toddler', chubby:true, hair:0x2b1d14,
       shirt:0x4a78d6, stripes:['#4a78d6','#ffffff'], pantStripes:['#2f3a55','#9fc3ff'] } ]},
   { dong:'103', name:'채이네', color:'#ff7aa8', wall:'#fff0f4', pos:[-11.5,-12.5], rot:0, members:[
-    { label:'채이 아빠', role:'dad', racer:true, shirt:0xe63946, pants:0xe63946, hair:0x1f1a1a, sign:{text:'🚤 모터보트 선수', cls:'racer'} },
-    { label:'채이 엄마', role:'mom', hair:'bob', hairColor:0x3b2418, shirt:0xffb3cf, pants:0xffb3cf, sign:{text:'초보운전', cls:'sticker'}, sticker:true },
-    { label:'채이', name:'채이', role:'daughter', age:'toddler', hair:'pigtailsUp', hairColor:0x3b2418, shirt:0xff8fb8, pants:0xff8fb8 } ]},
+    { label:'채이 아빠', tapLine:'아… 누워있고 싶다 😪', role:'dad', racer:true, shirt:0xe63946, pants:0xe63946, hair:0x1f1a1a, sign:{text:'🚤 모터보트 선수', cls:'racer'} },
+    { label:'채이 엄마', tapLine:'주차는 너무 어려워… 🚗', role:'mom', hair:'bob', hairColor:0x3b2418, shirt:0xffb3cf, pants:0xffb3cf, sign:{text:'초보운전', cls:'sticker'}, sticker:true },
+    { label:'채이', tapLine:'내 양갈래 예쁘지? 🎀', name:'채이', role:'daughter', age:'toddler', hair:'pigtailsUp', hairColor:0x3b2418, shirt:0xff8fb8, pants:0xff8fb8 } ]},
   { dong:'104', name:'서현이네', color:'#4cbf7a', wall:'#eefaf0', pos:[11.5,-12.5], rot:0, members:[
-    { label:'서현이 아빠', role:'dad', big:true, shirt:0x3fa66a, pants:0x2e3b33, hair:0x2b1d14, sign:{text:'삼성', cls:'samsung'} },
-    { label:'서현이 엄마', role:'mom', hair:'ponytail', hairColor:0x3a2418, face:'smile', shirt:0x9be0b2, pants:0x9be0b2 },
-    { label:'태현', name:'태현', role:'son', age:'kid', face:'grin', shirt:0x9be34a, pants:0x4a4f6b, hair:0x2b1d14 },
-    { label:'서현', name:'서현', role:'daughter', age:'toddler', hair:'oneTail', pin:true, hairColor:0x4a2c1c, dress:true, shirt:0xffe066, pants:0xffe066 } ]},
+    { label:'서현이 아빠', tapLine:'오늘 밥은 내가 쏜다! 🍖', role:'dad', big:true, shirt:0x3fa66a, pants:0x2e3b33, hair:0x2b1d14, sign:{text:'삼성', cls:'samsung'} },
+    { label:'서현이 엄마', tapLine:'오늘도 행복해요~ 😊', role:'mom', hair:'ponytail', hairColor:0x3a2418, face:'smile', shirt:0x9be0b2, pants:0x9be0b2 },
+    { label:'태현', tapLine:'나 잡아봐라~ 😜', name:'태현', role:'son', age:'kid', face:'grin', shirt:0x9be34a, pants:0x4a4f6b, hair:0x2b1d14 },
+    { label:'서현', tapLine:'내 꽃핀 예쁘지? 🌸', name:'서현', role:'daughter', age:'toddler', hair:'oneTail', pin:true, hairColor:0x4a2c1c, dress:true, shirt:0xffe066, pants:0xffe066 } ]},
   { dong:'107', name:'유담이네', color:'#ff9f43', wall:'#fff4e6', pos:[34.5,-12.5], rot:0, members:[
-    { label:'유담이 아빠', role:'dad', shirt:0xe8862f, pants:0x3a3230, hair:0x1f1a1a, skin:0xfff4ec, sign:{text:'새마을', cls:'saemaul'}, cat:[0x9a9a9a,0x6f6f6f] },
-    { label:'유담이 엄마', role:'mom', shirt:0xffc98a, pants:0xffc98a, hair:0x5a3825, cat:[0xffb347,0xe0822a] },
-    { label:'유담', name:'유담', role:'son', age:'toddler', shirt:0x7ed957, pants:0x3d4f8a, hair:0x8a5a36, skin:0xfff4ec } ]},
+    { label:'유담이 아빠', tapLine:'우리 냥이 귀엽죠? 🐱', role:'dad', shirt:0xe8862f, pants:0x3a3230, hair:0x1f1a1a, skin:0xfff4ec, sign:{text:'새마을', cls:'saemaul'}, cat:[0x9a9a9a,0x6f6f6f] },
+    { label:'유담이 엄마', tapLine:'다정하게 해~ 💕', role:'mom', shirt:0xffc98a, pants:0xffc98a, hair:0x5a3825, cat:[0xffb347,0xe0822a] },
+    { label:'유담', tapLine:'까꿍! 👶', name:'유담', role:'son', age:'toddler', shirt:0x7ed957, pants:0x3d4f8a, hair:0x8a5a36, skin:0xfff4ec } ]},
 ];
 
 try { await Promise.race([document.fonts.load('16px Jua'), new Promise(r=>setTimeout(r,1500))]); } catch(e){}
@@ -1017,9 +1013,31 @@ musicBtn.addEventListener('click', ()=>{
   musicBtn.textContent = Sound.on ? '🔊' : '🔇';
   musicBtn.setAttribute('aria-label', Sound.on ? '음악 끄기' : '음악 켜기');
   musicBtn.classList.toggle('off', !Sound.on);
+  if(silentEl){ if(Sound.on) silentEl.play().catch(()=>{}); else silentEl.pause(); }
+  if(Sound.on) unlockAudio();
 });
-const unlock = ()=>{ ensureAudio(); removeEventListener('pointerdown', unlock); removeEventListener('keydown', unlock); };
-addEventListener('pointerdown', unlock); addEventListener('keydown', unlock);
+// 모바일 소리 켜기: 사파리·크롬 모바일은 '손가락을 뗄 때(touchend/click)' 같은 진짜 사용자 동작 안에서만 소리를 허락해요
+let silentEl = null;
+function silentWavURL(){ // 0.5초짜리 무음 WAV (아이폰 무음 스위치를 켜 둬도 소리가 나게 해 줌)
+  const n = 4000, buf = new ArrayBuffer(44+n), v = new DataView(buf), w = (o,str)=>{ for(let i=0;i<str.length;i++) v.setUint8(o+i,str.charCodeAt(i)); };
+  w(0,'RIFF'); v.setUint32(4,36+n,true); w(8,'WAVE'); w(12,'fmt '); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,8000,true); v.setUint32(28,8000,true); v.setUint16(32,1,true); v.setUint16(34,8,true); w(36,'data'); v.setUint32(40,n,true);
+  for(let i=0;i<n;i++) v.setUint8(44+i,128);
+  return URL.createObjectURL(new Blob([buf],{type:'audio/wav'}));
+}
+function unlockAudio(){
+  ensureAudio();
+  const c = Sound.ctx; if(!c) return;
+  if(c.state !== 'running' && Sound.on) c.resume().catch(()=>{});
+  try{ const b = c.createBuffer(1,1,22050), src = c.createBufferSource(); src.buffer = b; src.connect(c.destination); src.start(0); }catch(_){}
+  try{ if(navigator.audioSession) navigator.audioSession.type = 'playback'; }catch(_){}
+  if(!silentEl){ silentEl = new Audio(silentWavURL()); silentEl.loop = true; silentEl.setAttribute('playsinline',''); }
+  if(Sound.on && silentEl.paused) silentEl.play().catch(()=>{});
+}
+['touchend','click','keydown','pointerup'].forEach(ev=> addEventListener(ev, unlockAudio, { capture:true, passive:true }));
+document.addEventListener('visibilitychange', ()=>{ // 앱 전환 후 돌아오면 다시 켜기
+  if(!document.hidden && Sound.ctx && Sound.on && Sound.ctx.state !== 'running') Sound.ctx.resume().catch(()=>{});
+});
 
 // ---------- 행동 ----------
 const CAM_FACE = Math.atan2(CAM_OFFSET.x, CAM_OFFSET.z);
