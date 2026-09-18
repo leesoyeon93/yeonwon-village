@@ -3,7 +3,59 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>연원마을 현대</title>
+<title>연원마을 현대 | 귀여운 3D 아파트 마을 게임</title>
+<!--
+  ▼ 웹에 올린 뒤 아래 SITE 주소(https://YOUR-ID.github.io/yeonwon-village/)를
+    실제 주소로 모두 바꿔 주세요. (카카오톡·페이스북·X는 og:image가 전체 주소여야 미리보기가 떠요)
+-->
+<meta name="description" content="102동 재윤이네, 103동 채이네, 104동 서현이네, 107동 유담이네! 귀여운 3D 캐릭터로 아파트 단지를 걸어 다니며 이웃과 인사하고, 놀이터에서 그네·시소를 타고, 숨겨진 퀘스트 7개를 찾아보세요.">
+<meta name="keywords" content="연원마을, 연원마을 현대, 3D 게임, 아파트 게임, 웹 게임, three.js, 귀여운 캐릭터, 가족 게임">
+<meta name="author" content="연원마을 현대">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#a9d6ee">
+<link rel="canonical" href="https://YOUR-ID.github.io/yeonwon-village/">
+
+<!-- 공유 미리보기 (카카오톡, 페이스북, 슬랙 등) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="연원마을 현대">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="연원마을 현대 | 귀여운 3D 아파트 마을 게임">
+<meta property="og:description" content="재윤이네, 채이네, 서현이네, 유담이네가 사는 3D 아파트 마을! 이웃과 인사하고, 그네·시소 타고, 숨은 퀘스트 7개를 찾아보세요.">
+<meta property="og:url" content="https://YOUR-ID.github.io/yeonwon-village/">
+<meta property="og:image" content="https://YOUR-ID.github.io/yeonwon-village/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="연원마을 현대 아파트 앞 광장에서 손을 흔드는 네 가족 캐릭터들">
+
+<!-- X(트위터) 카드 -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="연원마을 현대 | 귀여운 3D 아파트 마을 게임">
+<meta name="twitter:description" content="재윤이네, 채이네, 서현이네, 유담이네가 사는 3D 아파트 마을! 이웃과 인사하고 숨은 퀘스트를 찾아보세요.">
+<meta name="twitter:image" content="https://YOUR-ID.github.io/yeonwon-village/og-image.png">
+<meta name="twitter:image:alt" content="연원마을 현대 아파트 앞 광장에서 손을 흔드는 네 가족 캐릭터들">
+
+<!-- 아이콘 -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+<!-- 검색엔진용 구조화 데이터 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "연원마을 현대",
+  "description": "귀여운 3D 캐릭터로 아파트 단지를 걸어 다니며 이웃과 인사하고, 놀이터에서 놀고, 숨은 퀘스트 7개를 찾는 웹 게임",
+  "url": "https://YOUR-ID.github.io/yeonwon-village/",
+  "image": "https://YOUR-ID.github.io/yeonwon-village/og-image.png",
+  "inLanguage": "ko",
+  "genre": ["캐주얼", "생활 시뮬레이션"],
+  "gamePlatform": ["Web browser", "Mobile"],
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
@@ -162,9 +214,12 @@ button:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
 }
 @media (prefers-reduced-motion: reduce){ #stars i,#clouds i{animation:none} }
 #loading{position:fixed;inset:0;z-index:9;display:grid;place-items:center;font-size:22px;background:var(--sky)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
+<h1 class="sr-only">연원마을 현대 - 귀여운 3D 아파트 마을 게임</h1>
+<noscript><p style="padding:24px;font-size:18px">연원마을 현대는 102동 재윤이네, 103동 채이네, 104동 서현이네, 107동 유담이네가 사는 3D 아파트 마을 게임이에요. 게임을 하려면 자바스크립트를 켜 주세요.</p></noscript>
 <div id="sky"><div id="clouds"><i></i><i></i><i></i><i></i></div><div id="stars"></div></div>
 <div id="orbs"><button id="sun" aria-label="해"></button><button id="moon" aria-label="달" tabindex="-1"></button></div>
 <div id="toast" class="box" role="status"></div>
