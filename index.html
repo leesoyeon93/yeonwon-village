@@ -318,7 +318,7 @@ function resize(){
   cssW = innerWidth; cssH = innerHeight;
   renderer.setSize(cssW, cssH);
   const a = cssW/cssH;
-  viewEff = Math.max(viewSize, 26/a);   // 세로 화면(모바일)에서도 옆이 충분히 보이게
+  viewEff = viewSize * Math.max(1, 0.87/a);   // 세로 화면은 비율만큼 넓게 보되, 확대·축소는 그대로 적용
   camera.left = -viewEff*a/2; camera.right = viewEff*a/2;
   camera.top = viewEff/2; camera.bottom = -viewEff/2;
   camera.updateProjectionMatrix();
@@ -1266,9 +1266,9 @@ canvas.addEventListener('pointerdown', e=>{
 canvas.addEventListener('pointermove', e=>{
   if(pointers.has(e.pointerId)) pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
   if(pointers.size >= 2){
-    const [a,b] = [...pointers.values()], d = Math.hypot(a.x-b.x, a.y-b.y);
-    if(pinchD>0 && d>0) zoomBy(pinchD/d);
-    pinchD = d; return;
+    if(e.pointerType !== 'touch'){ const [a,b] = [...pointers.values()], d = Math.hypot(a.x-b.x, a.y-b.y);
+      if(pinchD>0 && d>0) zoomBy(pinchD/d); pinchD = d; }
+    return;
   }
   if(down && e.pointerId===down.id){
     const dx = e.clientX-down.x, dy = e.clientY-down.y;
@@ -1291,6 +1291,14 @@ function pointerEnd(e){
   }
 }
 canvas.addEventListener('pointerup', pointerEnd); canvas.addEventListener('pointercancel', pointerEnd);
+// 두 손가락 확대·축소 (모바일)
+let touchPinch = 0;
+const tdist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+canvas.addEventListener('touchstart', e=>{ if(e.touches.length >= 2){ e.preventDefault(); touchPinch = tdist(e.touches); joyEnd(); if(down){ clearTimeout(down.timer); down = null; } } }, { passive:false });
+canvas.addEventListener('touchmove', e=>{ if(e.touches.length >= 2){ e.preventDefault(); const d = tdist(e.touches); if(touchPinch > 0 && d > 0) zoomBy(touchPinch / d); touchPinch = d; } }, { passive:false });
+canvas.addEventListener('touchend', e=>{ if(e.touches.length < 2) touchPinch = 0; });
+// 사파리가 화면 전체를 확대해 버리는 기본 동작 막기
+['gesturestart','gesturechange','gestureend'].forEach(ev=> document.addEventListener(ev, e=> e.preventDefault(), { passive:false }));
 function makeGiant(p){
   select(people.indexOf(p));
   p.giantT = 7; setAct(p, 'wave', 2, CAM_FACE, '쑥쑥 컸다!!');
